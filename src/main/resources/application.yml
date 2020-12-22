@@ -1,0 +1,14 @@
+
+spring:
+  application:
+    name: prom-dbi-service
+
+server:
+  port: ${EUREKA_REGISTRATION_PORT:0}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:2011/eureka}
+  instance:
+    preferIpAddress: true
