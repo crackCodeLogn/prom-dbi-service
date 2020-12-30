@@ -1,14 +1,16 @@
-
 spring:
   application:
     name: prom-v2-dbi-service
+    heroku: ${spring.application.name}.herokuapp.com
 
 server:
   port: ${EUREKA_REGISTRATION_PORT:0}
 
 eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:2011/eureka}
+  local: http://localhost:2011
   instance:
+    hostname: ${EUREKA_HOSTNAME:${eureka.local}} #EUREKA_HOSTNAME var set to => https://prom-v2-eureka-service.herokuapp.com on heroku dashboard
     preferIpAddress: true
+  client:
+    service-url:
+      defaultZone: ${eureka.instance.hostname}/eureka
