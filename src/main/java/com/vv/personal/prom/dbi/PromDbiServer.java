@@ -54,7 +54,7 @@ public class PromDbiServer {
 		}
 		String port = environment.getProperty(LOCAL_SPRING_PORT);
 		String herokuHost = environment.getProperty(SPRING_APPLICATION_HEROKU);
-		LOGGER.info("DBI activation is complete, be ready to get burnt! Expected Heroku Swagger running on: {}, exact url: {}",
+		LOGGER.info("DBI activation is complete! Expected Heroku Swagger running on: {}, exact url: {}",
 				String.format(HEROKU_SWAGGER_UI_URL, herokuHost),
 				String.format(SWAGGER_UI_URL, host, port));
 	}
