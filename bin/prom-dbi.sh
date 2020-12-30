@@ -1,4 +1,4 @@
-APP_NAME="prom-dbi-service"
+APP_NAME="prom-v2-dbi-service"
 APP_VERSION="0.0.1-SNAPSHOT"
 JAVA_PARAM="-Xmx351m"
 

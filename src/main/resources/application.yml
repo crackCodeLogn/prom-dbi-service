@@ -1,7 +1,7 @@
 
 spring:
   application:
-    name: prom-dbi-service
+    name: prom-v2-dbi-service
 
 server:
   port: ${EUREKA_REGISTRATION_PORT:0}

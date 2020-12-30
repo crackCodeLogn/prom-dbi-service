@@ -1,0 +1,1 @@
+web: java -Dserver.port=$PORT -jar target/prom-v2-dbi-service-0.0.1-SNAPSHOT.jar
