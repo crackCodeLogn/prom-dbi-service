@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.vv.personal.prom.dbi.constants.Constants.*;
+
 /**
  * @author Vivek
  * @since 03/01/21
@@ -38,8 +40,68 @@ public class DbiCacheController {
     @Qualifier("RefTableComponent")
     private RefTableComponent refTableComponent;
 
-    @GetMapping("/clearAll")
-    public void clearAllCache() {
+    @GetMapping("/clear/ref/all")
+    public void clearAllRefCache() {
+        refTableCustomer.flushCache();
+        refTableCompany.flushCache();
+        refTableComponent.flushCache();
+        refTableMake.flushCache();
+        refTableProblem.flushCache();
+    }
 
+    @GetMapping("/clear/ref/{}")
+    public void clearSingleRefTableCache(String refTableCacheToClear) {
+        switch (refTableCacheToClear) {
+            case TABLE_REF_CUSTOMER:
+                refTableCustomer.flushCache();
+                break;
+            case TABLE_REF_COMPANY:
+                refTableCompany.flushCache();
+                break;
+            case TABLE_REF_COMPONENT:
+                refTableComponent.flushCache();
+                break;
+            case TABLE_REF_MAKE:
+                refTableMake.flushCache();
+                break;
+            case TABLE_REF_PROBLEM:
+                refTableProblem.flushCache();
+                break;
+        }
+    }
+
+    @GetMapping("/populate/ref/all")
+    public void populateAllRefCache() {
+        refTableCustomer.populatePrimaryIds();
+        refTableCompany.populatePrimaryIds();
+        refTableComponent.populatePrimaryIds();
+        refTableMake.populatePrimaryIds();
+        refTableProblem.populatePrimaryIds();
+    }
+
+    @GetMapping("/populate/ref/{}")
+    public void populateSingleRefTableCache(String refTableCacheToPopulate) {
+        switch (refTableCacheToPopulate) {
+            case TABLE_REF_CUSTOMER:
+                refTableCustomer.populatePrimaryIds();
+                break;
+            case TABLE_REF_COMPANY:
+                refTableCompany.populatePrimaryIds();
+                break;
+            case TABLE_REF_COMPONENT:
+                refTableComponent.populatePrimaryIds();
+                break;
+            case TABLE_REF_MAKE:
+                refTableMake.populatePrimaryIds();
+                break;
+            case TABLE_REF_PROBLEM:
+                refTableProblem.populatePrimaryIds();
+                break;
+        }
+    }
+
+    @GetMapping("/display/ref/all")
+    public String displayAllRefTableCache() {
+        return refTableCustomer.getCachedRef().getActiveRefEntityIds().toString();
     }
 }

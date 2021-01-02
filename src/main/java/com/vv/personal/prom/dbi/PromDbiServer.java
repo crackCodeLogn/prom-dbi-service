@@ -1,10 +1,9 @@
 package com.vv.personal.prom.dbi;
 
-import com.vv.personal.prom.dbi.interactor.ref.*;
+import com.vv.personal.prom.dbi.controller.DbiCacheController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -30,24 +29,7 @@ public class PromDbiServer {
     private Environment environment;
 
     @Autowired
-    @Qualifier("RefTableCustomer")
-    private RefTableCustomer refTableCustomer;
-
-    @Autowired
-    @Qualifier("RefTableCompany")
-    private RefTableCompany refTableCompany;
-
-    @Autowired
-    @Qualifier("RefTableProblem")
-    private RefTableProblem refTableProblem;
-
-    @Autowired
-    @Qualifier("RefTableMake")
-    private RefTableMake refTableMake;
-
-    @Autowired
-    @Qualifier("RefTableComponent")
-    private RefTableComponent refTableComponent;
+    private DbiCacheController dbiCacheController;
 
     public static void main(String[] args) {
         SpringApplication.run(PromDbiServer.class, args);
@@ -80,13 +62,8 @@ public class PromDbiServer {
                 String.format(HEROKU_SWAGGER_UI_URL, herokuHost),
                 String.format(SWAGGER_UI_URL, host, port));
 
-        refTableCompany.populatePrimaryIds();
-        refTableCustomer.populatePrimaryIds();
-        refTableProblem.populatePrimaryIds();
-        refTableMake.populatePrimaryIds();
-        refTableComponent.populatePrimaryIds();
-
-        LOGGER.info("Prepped overall cache => {}", refTableCompany.getCachedRef().getActiveRefEntityIds());
+        dbiCacheController.populateAllRefCache();
+        LOGGER.info("Prepped overall cache => {}", dbiCacheController.displayAllRefTableCache());
     }
 
 }

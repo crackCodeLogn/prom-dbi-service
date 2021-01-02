@@ -1,5 +1,8 @@
 package com.vv.personal.prom.dbi.interactor.ref;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +15,7 @@ import static com.vv.personal.prom.dbi.constants.Constants.*;
  * @since 02/01/21
  */
 public class CachedRef {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CachedRef.class);
     public final ConcurrentHashMap<String, Set<Integer>> activeRefEntityIds = new ConcurrentHashMap<>();
 
     public CachedRef() {
@@ -40,6 +44,7 @@ public class CachedRef {
 
     public synchronized void flushEntityCache(String entity) {
         activeRefEntityIds.get(entity).clear();
+        LOGGER.warn("Flushed cache for {}", entity);
     }
 
     public ConcurrentHashMap<String, Set<Integer>> getActiveRefEntityIds() {
