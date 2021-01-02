@@ -23,7 +23,7 @@ public class RefTableCompany extends RefDbi<Company> {
     @Override
     public int pushNewEntity(Company company) {
         LOGGER.info("Pushing company => {}", company);
-        if (cachedRef.isCompanyIdPresent(company.getCompanyId())) {
+        if (cachedRef.isIdPresentInEntityCache(TABLE, company.getCompanyId())) {
             LOGGER.info("Company '{}' already present", company.getCompanyName());
             return -1;
         }
@@ -45,13 +45,4 @@ public class RefTableCompany extends RefDbi<Company> {
         return -1;
     }
 
-    @Override
-    public void populatePrimaryIds() {
-        getCachedRef().addAllCompanyIds(selectAllIdsForTable());
-    }
-
-    @Override
-    public void flushCache() {
-        getCachedRef()
-    }
 }

@@ -24,7 +24,7 @@ public class RefTableCustomer extends RefDbi<Customer> {
     @Override
     public int pushNewEntity(Customer customer) {
         LOGGER.info("Pushing new customer '{}' into the DB", customer);
-        if (cachedRef.isCustomerIdPresent(customer.getCustomerId())) {
+        if (cachedRef.isIdPresentInEntityCache(TABLE, customer.getCustomerId())) {
             LOGGER.info("Customer '{}' already present", customer.getFirstName());
             return 0;
         }
@@ -45,14 +45,4 @@ public class RefTableCustomer extends RefDbi<Customer> {
         return 0;
     }
 
-
-    @Override
-    public void populatePrimaryIds() {
-        getCachedRef().addAllCustomerIds(selectAllIdsForTable());
-    }
-
-    @Override
-    public void flushCache() {
-
-    }
 }

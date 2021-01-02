@@ -19,7 +19,7 @@ public class RefTableComponent extends RefDbi<Component> {
     @Override
     public int pushNewEntity(Component component) { //enum based, defined in proto
         LOGGER.info("Pushing new component '{}' into the DB", component);
-        if (cachedRef.isComponentIdPresent(component.getSupportedComponentsValue())) {
+        if (cachedRef.isIdPresentInEntityCache(TABLE, component.getSupportedComponentsValue())) {
             LOGGER.info("Component '{}' already present", component.getSupportedComponents());
             return 0;
         }
@@ -31,8 +31,4 @@ public class RefTableComponent extends RefDbi<Component> {
         return 0;
     }
 
-    @Override
-    public void populatePrimaryIds() {
-        getCachedRef().addAllComponentIds(selectAllIdsForTable());
-    }
 }

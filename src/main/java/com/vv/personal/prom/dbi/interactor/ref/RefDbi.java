@@ -88,10 +88,6 @@ public abstract class RefDbi<T> implements IRefDbi<T> {
         return -1;
     }
 
-    public Collection<Integer> selectAllIdsForTable() {
-        return selectAllIdsForTable(TABLE, PRIMARY_COLUMN);
-    }
-
     @Override
     public Collection<Integer> selectAllIdsForTable(String table, String column) {
         List<Integer> ids = new ArrayList<>();
@@ -113,6 +109,20 @@ public abstract class RefDbi<T> implements IRefDbi<T> {
         }
         LOGGER.info("Received {} entries of select All for '{}' of table '{}'", rowsReturned, column, table);
         return ids;
+    }
+
+    @Override
+    public void populatePrimaryIds() {
+        getCachedRef().bulkAddNewIdsToEntityCache(TABLE, selectAllIdsForTable());
+    }
+
+    @Override
+    public void flushCache() {
+        getCachedRef().flushEntityCache(TABLE);
+    }
+
+    public Collection<Integer> selectAllIdsForTable() {
+        return selectAllIdsForTable(TABLE, PRIMARY_COLUMN);
     }
 
     public CachedRef getCachedRef() {

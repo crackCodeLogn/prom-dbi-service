@@ -19,7 +19,7 @@ public class RefTableProblem extends RefDbi<Problem> {
     @Override
     public int pushNewEntity(Problem problem) {
         LOGGER.info("Pushing new problem '{}' into the DB", problem);
-        if (cachedRef.isProblemIdPresent(problem.getProblemId())) {
+        if (cachedRef.isIdPresentInEntityCache(TABLE, problem.getProblemId())) {
             LOGGER.info("Problem '{}' already present", problem.getProblemName());
             return 0;
         }
@@ -31,8 +31,4 @@ public class RefTableProblem extends RefDbi<Problem> {
         return 0;
     }
 
-    @Override
-    public void populatePrimaryIds() {
-        getCachedRef().addAllProblemIds(selectAllIdsForTable());
-    }
 }

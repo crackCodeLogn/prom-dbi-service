@@ -80,11 +80,13 @@ public class PromDbiServer {
                 String.format(HEROKU_SWAGGER_UI_URL, herokuHost),
                 String.format(SWAGGER_UI_URL, host, port));
 
-        refTableMake.populatePrimaryIds();
+        refTableCompany.populatePrimaryIds();
         refTableCustomer.populatePrimaryIds();
         refTableProblem.populatePrimaryIds();
         refTableMake.populatePrimaryIds();
         refTableComponent.populatePrimaryIds();
+
+        LOGGER.info("Prepped overall cache => {}", refTableCompany.getCachedRef().getActiveRefEntityIds());
     }
 
 }

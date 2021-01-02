@@ -19,7 +19,7 @@ public class RefTableMake extends RefDbi<Make> {
     @Override
     public int pushNewEntity(Make make) {
         LOGGER.info("Pushing new make '{}' into the DB", make);
-        if (cachedRef.isMakeIdPresent(make.getMakeId())) {
+        if (cachedRef.isIdPresentInEntityCache(TABLE, make.getMakeId())) {
             LOGGER.info("Make '{}' already present", make.getMakeName());
             return 0;
         }
@@ -31,8 +31,4 @@ public class RefTableMake extends RefDbi<Make> {
         return 0;
     }
 
-    @Override
-    public void populatePrimaryIds() {
-        getCachedRef().addAllMakeIds(selectAllIdsForTable());
-    }
 }
