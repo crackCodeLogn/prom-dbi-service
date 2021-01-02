@@ -10,9 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import static com.vv.personal.prom.dbi.constants.Constants.SELECT_ALL_IDS;
 
@@ -41,17 +39,25 @@ public abstract class RefDbi<T> implements IRefDbi<T> {
     @Override
     public ResultSet executeNonUpdateSql(String sql) {
         LOGGER.info("Executing SQL => {}", sql);
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+        Callable<ResultSet> nonUpdateSqlTask = () -> {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            try {
+                ResultSet sqlResult = dbiConfigForRef.getStatement().executeQuery(sql);
+                LOGGER.info("SQL completed => {}", sql);
+                return sqlResult;
+            } catch (SQLException throwables) {
+                LOGGER.error("Failed to execute above SQL. ", throwables);
+            } finally {
+                stopWatch.stop();
+                LOGGER.info("Non-update SQL execution complete in {}ms", stopWatch.getTime(TimeUnit.MILLISECONDS));
+            }
+            return null;
+        };
         try {
-            ResultSet sqlResult = dbiConfigForRef.getStatement().executeQuery(sql);
-            LOGGER.info("SQL completed => {}", sql);
-            return sqlResult;
-        } catch (SQLException throwables) {
-            LOGGER.error("Failed to execute above SQL. ", throwables);
-        } finally {
-            stopWatch.stop();
-            LOGGER.info("Non-update SQL execution complete in {}ms", stopWatch.getTime(TimeUnit.MILLISECONDS));
+            return multiReadThreads.submit(nonUpdateSqlTask).get();
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error("Interrupted / Gone bad while executing sql -> '{}'/ ", sql, e);
         }
         return null;
     }
@@ -59,17 +65,25 @@ public abstract class RefDbi<T> implements IRefDbi<T> {
     @Override
     public int executeUpdateSql(String sql) {
         LOGGER.info("Executing SQL => {}", sql);
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+        Callable<Integer> updateSqlTask = () -> {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            try {
+                int sqlResult = dbiConfigForRef.getStatement().executeUpdate(sql);
+                LOGGER.info("Result of above SQL {} => {}", sql, sqlResult);
+                return sqlResult;
+            } catch (SQLException throwables) {
+                LOGGER.error("Failed to execute above SQL. ", throwables);
+            } finally {
+                stopWatch.stop();
+                LOGGER.info("Update SQL execution complete in {}ms", stopWatch.getTime(TimeUnit.MILLISECONDS));
+            }
+            return -1;
+        };
         try {
-            int sqlResult = dbiConfigForRef.getStatement().executeUpdate(sql);
-            LOGGER.info("Result of above SQL {} => {}", sql, sqlResult);
-            return sqlResult;
-        } catch (SQLException throwables) {
-            LOGGER.error("Failed to execute above SQL. ", throwables);
-        } finally {
-            stopWatch.stop();
-            LOGGER.info("Update SQL execution complete in {}ms", stopWatch.getTime(TimeUnit.MILLISECONDS));
+            return singleWriterThread.submit(updateSqlTask).get();
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error("Interrupted / Gone bad while executing sql -> '{}'. ", sql, e);
         }
         return -1;
     }
