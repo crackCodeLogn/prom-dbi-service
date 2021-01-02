@@ -1,8 +1,12 @@
 package com.vv.personal.prom.dbi.controller;
 
 import com.vv.personal.prom.artifactory.proto.Customer;
+import com.vv.personal.prom.dbi.interactor.RefTableCompany;
+import com.vv.personal.prom.dbi.interactor.RefTableCustomer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class DbiNewController {
     private static final Logger LOGGER = LoggerFactory.getLogger(DbiNewController.class);
 
+    @Autowired
+    @Qualifier("RefTableCustomer")
+    private RefTableCustomer refTableCustomer;
+
+    @Autowired
+    @Qualifier("RefTableCompany")
+    private RefTableCompany refTableCompany;
+
     @PostMapping("/customer")
-    public Boolean addNewCustomer(@RequestBody Customer newCustomer) {
-        LOGGER.info("Received new customer to add to DB: {}", newCustomer);
-        return Boolean.FALSE;
+    public int addNewCustomer(@RequestBody Customer newCustomer) {
+        refTableCompany.insertIfNewCompany(newCustomer.getCompany());
+        return refTableCustomer.pushNewCustomer(newCustomer);
     }
 }

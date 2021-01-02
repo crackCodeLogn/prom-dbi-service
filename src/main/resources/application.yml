@@ -14,3 +14,12 @@ eureka:
   client:
     service-url:
       defaultZone: ${eureka.instance.hostname}/eureka
+
+db:
+  ref:
+    name: ref
+    server:
+      host: localhost
+      port: 5432
+    user: postgres
+    cred: rom_p211
