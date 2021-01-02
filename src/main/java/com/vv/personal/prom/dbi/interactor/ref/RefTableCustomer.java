@@ -1,6 +1,5 @@
 package com.vv.personal.prom.dbi.interactor.ref;
 
-import com.google.protobuf.GeneratedMessageV3;
 import com.vv.personal.prom.artifactory.proto.Customer;
 import com.vv.personal.prom.dbi.config.DbiConfigForRef;
 import org.slf4j.Logger;
@@ -19,7 +18,7 @@ public class RefTableCustomer extends RefDbi<Customer> {
             " VALUES(%d, %d, '%s', '%s', '%s')";
 
     public RefTableCustomer(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef) {
-        super(table, primaryColumn, dbiConfigForRef, cachedRef);
+        super(table, primaryColumn, dbiConfigForRef, cachedRef, LOGGER);
     }
 
     @Override
@@ -29,15 +28,9 @@ public class RefTableCustomer extends RefDbi<Customer> {
             LOGGER.info("Customer '{}' already present", customer.getFirstName());
             return 0;
         }
-        return insertNewEntities(customer);
-    }
 
-    @Override
-    public <T extends GeneratedMessageV3> int insertNewEntities(T t) {
-        Customer customer = (Customer) t;
         String contactNumbers = extractContactNumbers(customer.getContactNumbersList());
         LOGGER.info("Finalized contact numbers for customer '{}' => '{}'", customer.getFirstName(), contactNumbers);
-
         String sql = String.format(INSERT_STMT_NEW_CUSTOMER, TABLE_REF_CUSTOMER,
                 customer.getCustomerId(),
                 customer.getCompany().getCompanyId(),
@@ -48,8 +41,18 @@ public class RefTableCustomer extends RefDbi<Customer> {
     }
 
     @Override
+    public int deleteEntity(Integer idToDel) {
+        return 0;
+    }
+
+
+    @Override
     public void populatePrimaryIds() {
         getCachedRef().addAllCustomerIds(selectAllIdsForTable());
     }
 
+    @Override
+    public void flushCache() {
+
+    }
 }

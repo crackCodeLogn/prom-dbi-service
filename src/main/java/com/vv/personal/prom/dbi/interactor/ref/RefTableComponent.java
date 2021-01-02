@@ -1,6 +1,5 @@
 package com.vv.personal.prom.dbi.interactor.ref;
 
-import com.google.protobuf.GeneratedMessageV3;
 import com.vv.personal.prom.artifactory.proto.Component;
 import com.vv.personal.prom.dbi.config.DbiConfigForRef;
 import org.slf4j.Logger;
@@ -14,7 +13,7 @@ public class RefTableComponent extends RefDbi<Component> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RefTableComponent.class);
 
     public RefTableComponent(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef) {
-        super(table, primaryColumn, dbiConfigForRef, cachedRef);
+        super(table, primaryColumn, dbiConfigForRef, cachedRef, LOGGER);
     }
 
     @Override
@@ -28,8 +27,8 @@ public class RefTableComponent extends RefDbi<Component> {
     }
 
     @Override
-    public <T extends GeneratedMessageV3> int insertNewEntities(T t) throws Exception {
-        throw new Exception("Not Supported");
+    public int deleteEntity(Integer idToDel) {
+        return 0;
     }
 
     @Override

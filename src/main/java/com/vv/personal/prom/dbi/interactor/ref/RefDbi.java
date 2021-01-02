@@ -3,7 +3,6 @@ package com.vv.personal.prom.dbi.interactor.ref;
 import com.vv.personal.prom.dbi.config.DbiConfigForRef;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +18,7 @@ import static com.vv.personal.prom.dbi.constants.Constants.SELECT_ALL_IDS;
  * @since 01/01/21
  */
 public abstract class RefDbi<T> implements IRefDbi<T> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RefDbi.class);
+    private final Logger LOGGER;
     protected final String TABLE;
     protected final String PRIMARY_COLUMN;
     protected final CachedRef cachedRef;
@@ -27,11 +26,12 @@ public abstract class RefDbi<T> implements IRefDbi<T> {
     private final ExecutorService singleWriterThread = Executors.newSingleThreadExecutor();
     private final ExecutorService multiReadThreads = Executors.newFixedThreadPool(4);
 
-    public RefDbi(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef) {
+    public RefDbi(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef, Logger logger) {
         this.TABLE = table;
         this.PRIMARY_COLUMN = primaryColumn;
         this.dbiConfigForRef = dbiConfigForRef;
         this.cachedRef = cachedRef;
+        this.LOGGER = logger;
 
         LOGGER.info("Created handler for '{}'", TABLE);
     }

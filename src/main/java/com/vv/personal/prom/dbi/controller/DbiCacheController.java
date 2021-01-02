@@ -1,24 +1,22 @@
 package com.vv.personal.prom.dbi.controller;
 
-import com.vv.personal.prom.artifactory.proto.Customer;
 import com.vv.personal.prom.dbi.interactor.ref.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Vivek
- * @since 30/12/20
+ * @since 03/01/21
  */
-@RestController("DbiController")
-@RequestMapping("/prom/dbi/new")
-public class DbiNewController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DbiNewController.class);
+@RestController("DbiCacheController")
+@RequestMapping("/prom/dbi/cache")
+public class DbiCacheController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DbiCacheController.class);
 
     @Autowired
     @Qualifier("RefTableCustomer")
@@ -40,10 +38,8 @@ public class DbiNewController {
     @Qualifier("RefTableComponent")
     private RefTableComponent refTableComponent;
 
-    @PostMapping("/customer")
-    public int addNewCustomer(@RequestBody Customer newCustomer) {
-        refTableCompany.pushNewEntity(newCustomer.getCompany());
-        return refTableCustomer.pushNewEntity(newCustomer);
-    }
+    @GetMapping("/clearAll")
+    public void clearAllCache() {
 
+    }
 }

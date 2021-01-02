@@ -19,7 +19,11 @@ public interface IRefDbi<T> extends IDbi {
 
     int pushNewEntity(T t);
 
+    int deleteEntity(Integer idToDel);
+
     Collection<Integer> selectAllIdsForTable(String table, String column);
 
     void populatePrimaryIds();
+
+    void flushCache();
 }
