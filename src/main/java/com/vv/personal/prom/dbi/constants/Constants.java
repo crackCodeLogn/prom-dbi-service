@@ -44,6 +44,9 @@ public class Constants {
 
     public static final String PRIMARY_COL_CUSTOMER = "id_cust";
     public static final String PRIMARY_COL_COMPANY = "id_comp";
+    public static final String PRIMARY_COL_MAKE = "id_make";
+    public static final String PRIMARY_COL_PROBLEM = "id_prob";
+    public static final String PRIMARY_COL_COMPONENT = "id_cpnt";
 
     public static final String INSERT_STMT_INT_STR = "INSERT INTO %s" +
             "VALUES(%d, %s)";

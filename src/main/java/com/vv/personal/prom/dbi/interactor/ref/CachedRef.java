@@ -1,4 +1,4 @@
-package com.vv.personal.prom.dbi.interactor;
+package com.vv.personal.prom.dbi.interactor.ref;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,6 +41,42 @@ public class CachedRef {
 
     public synchronized void addAllCompanyIds(Collection<Integer> companyIds) {
         companyIds.forEach(this::addNewCompanyId);
+    }
+
+    public synchronized Boolean addNewMakeId(Integer makeId) {
+        return activeMakeIds.putIfAbsent(makeId, true);
+    }
+
+    public synchronized Boolean isMakeIdPresent(Integer makeId) {
+        return activeMakeIds.containsKey(makeId);
+    }
+
+    public synchronized void addAllMakeIds(Collection<Integer> makeIds) {
+        makeIds.forEach(this::addNewMakeId);
+    }
+
+    public synchronized Boolean addNewProblemId(Integer problemId) {
+        return activeProblemIds.putIfAbsent(problemId, true);
+    }
+
+    public synchronized Boolean isProblemIdPresent(Integer problemId) {
+        return activeProblemIds.containsKey(problemId);
+    }
+
+    public synchronized void addAllProblemIds(Collection<Integer> problemIds) {
+        problemIds.forEach(this::addNewProblemId);
+    }
+
+    public synchronized Boolean addNewComponentId(Integer componentIds) {
+        return activeComponentIds.putIfAbsent(componentIds, true);
+    }
+
+    public synchronized Boolean isComponentIdPresent(Integer componentIds) {
+        return activeComponentIds.containsKey(componentIds);
+    }
+
+    public synchronized void addAllComponentIds(Collection<Integer> componentIds) {
+        componentIds.forEach(this::addNewComponentId);
     }
 
     public ConcurrentHashMap<Integer, Boolean> getActiveCustomerIds() {

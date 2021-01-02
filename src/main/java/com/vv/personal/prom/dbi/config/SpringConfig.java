@@ -1,8 +1,6 @@
 package com.vv.personal.prom.dbi.config;
 
-import com.vv.personal.prom.dbi.interactor.CachedRef;
-import com.vv.personal.prom.dbi.interactor.RefTableCompany;
-import com.vv.personal.prom.dbi.interactor.RefTableCustomer;
+import com.vv.personal.prom.dbi.interactor.ref.*;
 import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +36,24 @@ public class SpringConfig {
     @Qualifier("RefTableCompany")
     public RefTableCompany refTableCompany() {
         return new RefTableCompany(TABLE_REF_COMPANY, PRIMARY_COL_COMPANY, RefDbConnector(), cachedRef());
+    }
+
+    @Bean
+    @Qualifier("RefTableMake")
+    public RefTableMake refTableMake() {
+        return new RefTableMake(TABLE_REF_MAKE, PRIMARY_COL_MAKE, RefDbConnector(), cachedRef());
+    }
+
+    @Bean
+    @Qualifier("RefTableProblem")
+    public RefTableProblem refTableProblem() {
+        return new RefTableProblem(TABLE_REF_PROBLEM, PRIMARY_COL_PROBLEM, RefDbConnector(), cachedRef());
+    }
+
+    @Bean
+    @Qualifier("RefTableComponent")
+    public RefTableComponent refTableComponent() {
+        return new RefTableComponent(TABLE_REF_COMPONENT, PRIMARY_COL_COMPONENT, RefDbConnector(), cachedRef());
     }
 
     @Bean(initMethod = "start")

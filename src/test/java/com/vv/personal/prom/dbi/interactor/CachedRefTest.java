@@ -1,6 +1,7 @@
 
 package com.vv.personal.prom.dbi.interactor;
 
+import com.vv.personal.prom.dbi.interactor.ref.CachedRef;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

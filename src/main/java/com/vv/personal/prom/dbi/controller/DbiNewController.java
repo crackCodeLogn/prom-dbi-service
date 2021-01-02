@@ -1,8 +1,8 @@
 package com.vv.personal.prom.dbi.controller;
 
 import com.vv.personal.prom.artifactory.proto.Customer;
-import com.vv.personal.prom.dbi.interactor.RefTableCompany;
-import com.vv.personal.prom.dbi.interactor.RefTableCustomer;
+import com.vv.personal.prom.dbi.interactor.ref.RefTableCompany;
+import com.vv.personal.prom.dbi.interactor.ref.RefTableCustomer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class DbiNewController {
 
     @PostMapping("/customer")
     public int addNewCustomer(@RequestBody Customer newCustomer) {
-        refTableCompany.insertIfNewCompany(newCustomer.getCompany());
-        return refTableCustomer.pushNewCustomer(newCustomer);
+        refTableCompany.pushNewEntity(newCustomer.getCompany());
+        return refTableCustomer.pushNewEntity(newCustomer);
     }
 }

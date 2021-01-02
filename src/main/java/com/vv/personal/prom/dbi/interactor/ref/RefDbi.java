@@ -1,4 +1,4 @@
-package com.vv.personal.prom.dbi.interactor;
+package com.vv.personal.prom.dbi.interactor.ref;
 
 import com.vv.personal.prom.dbi.config.DbiConfigForRef;
 import org.apache.commons.lang3.time.StopWatch;
@@ -10,27 +10,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static com.vv.personal.prom.dbi.constants.Constants.INSERT_STMT_INT_STR;
 import static com.vv.personal.prom.dbi.constants.Constants.SELECT_ALL_IDS;
 
 /**
  * @author Vivek
  * @since 01/01/21
  */
-public abstract class RefDbi implements IRefDbi {
+public abstract class RefDbi<T> implements IRefDbi<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RefDbi.class);
     protected final String TABLE;
     protected final String PRIMARY_COLUMN;
     protected final CachedRef cachedRef;
     private final DbiConfigForRef dbiConfigForRef;
+    private final ExecutorService singleWriterThread = Executors.newSingleThreadExecutor();
+    private final ExecutorService multiReadThreads = Executors.newFixedThreadPool(4);
 
     public RefDbi(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef) {
         this.TABLE = table;
         this.PRIMARY_COLUMN = primaryColumn;
         this.dbiConfigForRef = dbiConfigForRef;
         this.cachedRef = cachedRef;
+
         LOGGER.info("Created handler for '{}'", TABLE);
     }
 
@@ -70,26 +74,30 @@ public abstract class RefDbi implements IRefDbi {
         return -1;
     }
 
-    @Override
-    public int insertNewIntegerAndString(Integer id, String detail) {
-        String sql = String.format(INSERT_STMT_INT_STR, TABLE, id, detail);
-        return executeUpdateSql(sql);
+    public Collection<Integer> selectAllIdsForTable() {
+        return selectAllIdsForTable(TABLE, PRIMARY_COLUMN);
     }
 
     @Override
     public Collection<Integer> selectAllIdsForTable(String table, String column) {
-        String sql = String.format(SELECT_ALL_IDS, column, table);
-        ResultSet resultSet = executeNonUpdateSql(sql);
-        LOGGER.info("Received result of select All for '{}' of table '{}'", column, table);
         List<Integer> ids = new ArrayList<>();
-        while (true) {
-            try {
-                if (!resultSet.next()) break;
-                ids.add(resultSet.getInt(1));
-            } catch (SQLException throwables) {
-                LOGGER.error("Failed to completely extract result from the above select all query. ", throwables);
+        int rowsReturned = 0;
+        String sql = String.format(SELECT_ALL_IDS, column, table);
+        try {
+            ResultSet resultSet = executeNonUpdateSql(sql);
+            while (true) {
+                try {
+                    if (!resultSet.next()) break;
+                    ids.add(resultSet.getInt(1));
+                    rowsReturned++;
+                } catch (SQLException throwables) {
+                    LOGGER.error("Failed to completely extract result from the above select all query. ", throwables);
+                }
             }
+        } catch (Exception e) {
+            LOGGER.error("Failed to execute sql '{}'. ", sql, e);
         }
+        LOGGER.info("Received {} entries of select All for '{}' of table '{}'", rowsReturned, column, table);
         return ids;
     }
 

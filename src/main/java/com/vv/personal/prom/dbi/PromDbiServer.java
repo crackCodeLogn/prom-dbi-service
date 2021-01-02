@@ -1,7 +1,6 @@
 package com.vv.personal.prom.dbi;
 
-import com.vv.personal.prom.dbi.interactor.RefTableCompany;
-import com.vv.personal.prom.dbi.interactor.RefTableCustomer;
+import com.vv.personal.prom.dbi.interactor.ref.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +28,26 @@ public class PromDbiServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(PromDbiServer.class);
     @Autowired
     private Environment environment;
+
     @Autowired
     @Qualifier("RefTableCustomer")
     private RefTableCustomer refTableCustomer;
+
     @Autowired
     @Qualifier("RefTableCompany")
     private RefTableCompany refTableCompany;
+
+    @Autowired
+    @Qualifier("RefTableProblem")
+    private RefTableProblem refTableProblem;
+
+    @Autowired
+    @Qualifier("RefTableMake")
+    private RefTableMake refTableMake;
+
+    @Autowired
+    @Qualifier("RefTableComponent")
+    private RefTableComponent refTableComponent;
 
     public static void main(String[] args) {
         SpringApplication.run(PromDbiServer.class, args);
@@ -67,11 +80,11 @@ public class PromDbiServer {
                 String.format(HEROKU_SWAGGER_UI_URL, herokuHost),
                 String.format(SWAGGER_UI_URL, host, port));
 
-        refTableCompany.populatePrimaryIds();
+        refTableMake.populatePrimaryIds();
         refTableCustomer.populatePrimaryIds();
-//        populateMakeIds();
-//        populateProblemIds();
-//        populateComponentIds();
+        refTableProblem.populatePrimaryIds();
+        refTableMake.populatePrimaryIds();
+        refTableComponent.populatePrimaryIds();
     }
 
 }

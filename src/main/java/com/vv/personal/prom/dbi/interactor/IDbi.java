@@ -14,7 +14,7 @@ public interface IDbi {
 
     int executeUpdateSql(String sql);
 
-    default <T extends GeneratedMessageV3> int insertNewEntries(T t) {
+    default <T extends GeneratedMessageV3> int insertNewEntities(T t) throws Exception {
         String sql = "";
         return executeUpdateSql(sql);
     }
