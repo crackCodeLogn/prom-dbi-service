@@ -52,4 +52,5 @@ public class Constants {
             "VALUES(%d, %s)";
 
     public static final String SELECT_ALL_IDS = "SELECT %s FROM %s";
+    public static final String SELECT_ALL = "SELECT * FROM %s";
 }

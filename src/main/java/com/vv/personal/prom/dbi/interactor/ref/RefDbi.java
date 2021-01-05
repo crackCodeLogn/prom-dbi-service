@@ -17,7 +17,7 @@ import static com.vv.personal.prom.dbi.constants.Constants.SELECT_ALL_IDS;
  * @author Vivek
  * @since 01/01/21
  */
-public abstract class RefDbi<T> implements IRefDbi<T> {
+public abstract class RefDbi<T, K> implements IRefDbi<T, K> {
     private final Logger LOGGER;
     protected final String TABLE;
     protected final String PRIMARY_COLUMN;
@@ -105,7 +105,7 @@ public abstract class RefDbi<T> implements IRefDbi<T> {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to execute sql '{}'. ", sql, e);
+            LOGGER.error("Failed to execute / process sql '{}'. ", sql, e);
         }
         LOGGER.info("Received {} entries of select All for '{}' of table '{}'", rowsReturned, column, table);
         return ids;

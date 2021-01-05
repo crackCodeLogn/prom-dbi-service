@@ -1,6 +1,7 @@
 package com.vv.personal.prom.dbi.interactor.ref;
 
 import com.vv.personal.prom.artifactory.proto.Make;
+import com.vv.personal.prom.artifactory.proto.MakeList;
 import com.vv.personal.prom.dbi.config.DbiConfigForRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author Vivek
  * @since 02/01/21
  */
-public class RefTableMake extends RefDbi<Make> {
+public class RefTableMake extends RefDbi<Make, MakeList> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RefTableMake.class);
 
     public RefTableMake(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef) {
@@ -29,6 +30,16 @@ public class RefTableMake extends RefDbi<Make> {
     @Override
     public int deleteEntity(Integer idToDel) {
         return 0;
+    }
+
+    @Override
+    public MakeList retrieveAll() {
+        return null;
+    }
+
+    @Override
+    public MakeList retrieveSelective() {
+        return null;
     }
 
 }

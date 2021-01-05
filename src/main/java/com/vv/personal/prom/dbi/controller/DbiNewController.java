@@ -1,6 +1,6 @@
 package com.vv.personal.prom.dbi.controller;
 
-import com.vv.personal.prom.artifactory.proto.Customer;
+import com.vv.personal.prom.artifactory.proto.*;
 import com.vv.personal.prom.dbi.interactor.ref.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +42,28 @@ public class DbiNewController {
 
     @PostMapping("/customer")
     public int addNewCustomer(@RequestBody Customer newCustomer) {
-        refTableCompany.pushNewEntity(newCustomer.getCompany());
+        addNewCompany(newCustomer.getCompany());
         return refTableCustomer.pushNewEntity(newCustomer);
+    }
+
+    @PostMapping("/company")
+    public int addNewCompany(@RequestBody Company newcustomer) {
+        return refTableCompany.pushNewEntity(newcustomer);
+    }
+
+    @PostMapping("/make")
+    public int addNewMake(@RequestBody Make newMake) {
+        return refTableMake.pushNewEntity(newMake);
+    }
+
+    @PostMapping("/problem")
+    public int addNewProblem(@RequestBody Problem newProblem) {
+        return refTableProblem.pushNewEntity(newProblem);
+    }
+
+    @PostMapping("/component")
+    public int addNewComponent(@RequestBody Component newComponent) {
+        return refTableComponent.pushNewEntity(newComponent);
     }
 
 }

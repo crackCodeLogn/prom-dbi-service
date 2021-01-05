@@ -1,6 +1,8 @@
 package com.vv.personal.prom.dbi.util;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import static com.vv.personal.prom.dbi.constants.Constants.EMPTY_STR;
@@ -17,7 +19,13 @@ public class DbiUtil {
             contactNumbersString = contactNumbers.stream()
                     .map(String::trim)
                     .filter(number -> !number.isEmpty())
-                    .collect(Collectors.joining());
+                    .collect(Collectors.joining(","));
         return contactNumbersString;
+    }
+
+    public static Collection<String> convertToContactList(String contactNumbers) {
+        if (contactNumbers.isEmpty()) return Collections.emptyList();
+        return Arrays.stream(contactNumbers.split(","))
+                .collect(Collectors.toList());
     }
 }

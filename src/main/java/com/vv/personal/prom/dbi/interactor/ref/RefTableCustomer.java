@@ -1,6 +1,7 @@
 package com.vv.personal.prom.dbi.interactor.ref;
 
 import com.vv.personal.prom.artifactory.proto.Customer;
+import com.vv.personal.prom.artifactory.proto.CustomerList;
 import com.vv.personal.prom.dbi.config.DbiConfigForRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,7 @@ import static com.vv.personal.prom.dbi.util.DbiUtil.extractContactNumbers;
  * @author Vivek
  * @since 01/01/21
  */
-public class RefTableCustomer extends RefDbi<Customer> {
+public class RefTableCustomer extends RefDbi<Customer, CustomerList> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RefTableCustomer.class);
     private final String INSERT_STMT_NEW_CUSTOMER = "INSERT INTO %s(id_cust, id_comp, name_first, name_last, contact_cust)" +
             " VALUES(%d, %d, '%s', '%s', '%s')";
@@ -43,6 +44,16 @@ public class RefTableCustomer extends RefDbi<Customer> {
     @Override
     public int deleteEntity(Integer idToDel) {
         return 0;
+    }
+
+    @Override
+    public CustomerList retrieveAll() {
+        return null;
+    }
+
+    @Override
+    public CustomerList retrieveSelective() {
+        return null;
     }
 
 }
