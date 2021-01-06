@@ -62,13 +62,8 @@ public class RefTableCompany extends RefDbi<Company, CompanyList> {
             while (true) {
                 try {
                     if (!resultSet.next()) break;
-                    Company.Builder companyBuilder = Company.newBuilder();
-                    companyBuilder.setCompanyId(resultSet.getInt(1));
-                    companyBuilder.setCompanyName(resultSet.getString(2));
-                    companyBuilder.setCompanyContactPerson(resultSet.getString(3));
-                    Collection<String> companyContactNumbers = convertToContactList(resultSet.getString(4));
-                    companyBuilder.addAllContactNumbers(companyContactNumbers);
-                    companyLister.addCompanies(companyBuilder.build());
+                    Company company = generateDetail(resultSet);
+                    companyLister.addCompany(company);
                     rowsReturned++;
                 } catch (SQLException throwables) {
                     LOGGER.error("Failed to completely extract result from the above select all query. ", throwables);
@@ -84,6 +79,21 @@ public class RefTableCompany extends RefDbi<Company, CompanyList> {
     @Override
     public CompanyList retrieveSelective() {
         return CompanyList.newBuilder().build();
+    }
+
+    @Override
+    public Company generateDetail(ResultSet resultSet) {
+        Company.Builder companyBuilder = Company.newBuilder();
+        try {
+            companyBuilder.setCompanyId(resultSet.getInt(1));
+            companyBuilder.setCompanyName(resultSet.getString(2));
+            companyBuilder.setCompanyContactPerson(resultSet.getString(3));
+            Collection<String> companyContactNumbers = convertToContactList(resultSet.getString(4));
+            companyBuilder.addAllContactNumbers(companyContactNumbers);
+        } catch (SQLException throwables) {
+            LOGGER.error("Failed to retrieve company detail from DB. ", throwables);
+        }
+        return companyBuilder.build();
     }
 
 }

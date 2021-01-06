@@ -1,12 +1,19 @@
 package com.vv.personal.prom.dbi.interactor.ref;
 
+import com.vv.personal.prom.artifactory.proto.Company;
 import com.vv.personal.prom.artifactory.proto.Customer;
 import com.vv.personal.prom.artifactory.proto.CustomerList;
 import com.vv.personal.prom.dbi.config.DbiConfigForRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
+
+import static com.vv.personal.prom.dbi.constants.Constants.SELECT_ALL;
 import static com.vv.personal.prom.dbi.constants.Constants.TABLE_REF_CUSTOMER;
+import static com.vv.personal.prom.dbi.util.DbiUtil.convertToContactList;
 import static com.vv.personal.prom.dbi.util.DbiUtil.extractContactNumbers;
 
 /**
@@ -48,12 +55,57 @@ public class RefTableCustomer extends RefDbi<Customer, CustomerList> {
 
     @Override
     public CustomerList retrieveAll() {
-        return null;
+        String sql = String.format(SELECT_ALL, TABLE);
+        ResultSet resultSet = executeNonUpdateSql(sql);
+        int rowsReturned = 0;
+        CustomerList.Builder customerLister = CustomerList.newBuilder();
+        try {
+            while (true) {
+                try {
+                    if (!resultSet.next()) break;
+                    Customer customer = generateDetail(resultSet);
+                    customerLister.addCustomer(customer);
+                    rowsReturned++;
+                } catch (SQLException throwables) {
+                    LOGGER.error("Failed to completely extract result from the above select all query. ", throwables);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed to execute / process sql '{}'. ", sql, e);
+        }
+        LOGGER.info("Received {} entries for sql => '{}'", rowsReturned, sql);
+        return customerLister.build();
     }
 
     @Override
     public CustomerList retrieveSelective() {
         return null;
+    }
+
+    @Override
+    public Customer generateDetail(ResultSet resultSet) {
+        Customer.Builder builder = Customer.newBuilder();
+        try {
+            builder.setCustomerId(resultSet.getInt(1));
+            builder.setCompany(generateCompanyBodyForCustomer(resultSet.getInt(2)));
+            builder.setFirstName(resultSet.getString(3));
+            builder.setLastName(resultSet.getString(4));
+            Collection<String> customerContactNumbers = convertToContactList(resultSet.getString(5));
+            builder.addAllContactNumbers(customerContactNumbers);
+        } catch (SQLException throwables) {
+            LOGGER.error("Failed to retrieve company detail from DB. ", throwables);
+        }
+        return builder.build();
+    }
+
+    /**
+     * @param customerId - to fill the object
+     * @return A sample Company obj with only id populated. Later on to be merged with comp ref on client side - android
+     */
+    private Company generateCompanyBodyForCustomer(int customerId) {
+        return Company.newBuilder()
+                .setCompanyId(customerId)
+                .build();
     }
 
 }

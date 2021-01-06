@@ -2,6 +2,7 @@ package com.vv.personal.prom.dbi.interactor.ref;
 
 import com.vv.personal.prom.dbi.interactor.IDbi;
 
+import java.sql.ResultSet;
 import java.util.Collection;
 
 import static com.vv.personal.prom.dbi.constants.Constants.INSERT_STMT_INT_STR;
@@ -24,6 +25,8 @@ public interface IRefDbi<T, K> extends IDbi {
     K retrieveAll();
 
     K retrieveSelective(); //TODO -- work on this later, not imp atm.
+
+    T generateDetail(ResultSet resultSet);
 
     Collection<Integer> selectAllIdsForTable(String table, String column);
 
