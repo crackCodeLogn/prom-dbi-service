@@ -85,10 +85,10 @@ public class RefTableCompany extends RefDbi<Company, CompanyList> {
     public Company generateDetail(ResultSet resultSet) {
         Company.Builder companyBuilder = Company.newBuilder();
         try {
-            companyBuilder.setCompanyId(resultSet.getInt(1));
-            companyBuilder.setCompanyName(resultSet.getString(2));
-            companyBuilder.setCompanyContactPerson(resultSet.getString(3));
-            Collection<String> companyContactNumbers = convertToContactList(resultSet.getString(4));
+            companyBuilder.setCompanyId(resultSet.getInt("id_comp"));
+            companyBuilder.setCompanyName(resultSet.getString("name_comp"));
+            companyBuilder.setCompanyContactPerson(resultSet.getString("person_contact_comp"));
+            Collection<String> companyContactNumbers = convertToContactList(resultSet.getString("contact_comp"));
             companyBuilder.addAllContactNumbers(companyContactNumbers);
         } catch (SQLException throwables) {
             LOGGER.error("Failed to retrieve company detail from DB. ", throwables);

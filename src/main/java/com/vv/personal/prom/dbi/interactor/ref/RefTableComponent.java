@@ -71,8 +71,8 @@ public class RefTableComponent extends RefDbi<Component, ComponentList> {
     public Component generateDetail(ResultSet resultSet) {
         Component.Builder builder = Component.newBuilder();
         try {
-            builder.setComponentId(resultSet.getInt(1));
-            builder.setSupportedComponents(SupportedComponents.valueOf(resultSet.getString(2)));
+            builder.setComponentId(resultSet.getInt("id_cpnt"));
+            builder.setSupportedComponents(SupportedComponents.valueOf(resultSet.getString("name_cpnt")));
         } catch (SQLException throwables) {
             LOGGER.error("Failed to retrieve company detail from DB. ", throwables);
         }

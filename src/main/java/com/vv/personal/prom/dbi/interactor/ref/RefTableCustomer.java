@@ -86,11 +86,11 @@ public class RefTableCustomer extends RefDbi<Customer, CustomerList> {
     public Customer generateDetail(ResultSet resultSet) {
         Customer.Builder builder = Customer.newBuilder();
         try {
-            builder.setCustomerId(resultSet.getInt(1));
-            builder.setCompany(generateCompanyBodyForCustomer(resultSet.getInt(2)));
-            builder.setFirstName(resultSet.getString(3));
-            builder.setLastName(resultSet.getString(4));
-            Collection<String> customerContactNumbers = convertToContactList(resultSet.getString(5));
+            builder.setCustomerId(resultSet.getInt("id_cust"));
+            builder.setCompany(generateCompanyBodyForCustomer(resultSet.getInt("id_comp")));
+            builder.setFirstName(resultSet.getString("name_first"));
+            builder.setLastName(resultSet.getString("name_last"));
+            Collection<String> customerContactNumbers = convertToContactList(resultSet.getString("contact_cust"));
             builder.addAllContactNumbers(customerContactNumbers);
         } catch (SQLException throwables) {
             LOGGER.error("Failed to retrieve company detail from DB. ", throwables);

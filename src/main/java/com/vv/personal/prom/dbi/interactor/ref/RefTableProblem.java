@@ -70,8 +70,8 @@ public class RefTableProblem extends RefDbi<Problem, ProblemList> {
     public Problem generateDetail(ResultSet resultSet) {
         Problem.Builder builder = Problem.newBuilder();
         try {
-            builder.setProblemId(resultSet.getInt(1));
-            builder.setProblemName(resultSet.getString(2));
+            builder.setProblemId(resultSet.getInt("id_prob"));
+            builder.setProblemName(resultSet.getString("name_prob"));
         } catch (SQLException throwables) {
             LOGGER.error("Failed to retrieve problem detail from DB. ", throwables);
         }

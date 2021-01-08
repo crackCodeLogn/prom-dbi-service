@@ -70,8 +70,8 @@ public class RefTableMake extends RefDbi<Make, MakeList> {
     public Make generateDetail(ResultSet resultSet) {
         Make.Builder builder = Make.newBuilder();
         try {
-            builder.setMakeId(resultSet.getInt(1));
-            builder.setMakeName(resultSet.getString(2));
+            builder.setMakeId(resultSet.getInt("id_make"));
+            builder.setMakeName(resultSet.getString("name_make"));
         } catch (SQLException throwables) {
             LOGGER.error("Failed to retrieve make detail from DB. ", throwables);
         }
