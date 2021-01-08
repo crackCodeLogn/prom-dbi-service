@@ -5,18 +5,13 @@ import com.vv.personal.prom.dbi.interactor.IDbi;
 import java.sql.ResultSet;
 import java.util.Collection;
 
-import static com.vv.personal.prom.dbi.constants.Constants.INSERT_STMT_INT_STR;
-
 /**
  * @author Vivek
  * @since 01/01/21
  */
 public interface IRefDbi<T, K> extends IDbi {
 
-    default int insertNewIntegerAndString(String table, Integer id, String detail) {
-        String sql = String.format(INSERT_STMT_INT_STR, table, id, detail);
-        return executeUpdateSql(sql);
-    }
+    int insertNewIntegerAndString(String table, Integer id, String detail);
 
     int pushNewEntity(T t);
 
@@ -33,4 +28,11 @@ public interface IRefDbi<T, K> extends IDbi {
     void populatePrimaryIds();
 
     void flushCache();
+
+    default int addToCacheOnSqlResult(Integer sqlResult, String table, Integer id) {
+        if (sqlResult == 1) addToCache(table, id);
+        return sqlResult;
+    }
+
+    void addToCache(String table, Integer id);
 }

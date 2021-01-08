@@ -45,7 +45,8 @@ public class RefTableCustomer extends RefDbi<Customer, CustomerList> {
                 customer.getFirstName(),
                 customer.getLastName(),
                 contactNumbers);
-        return executeUpdateSql(sql);
+        int sqlExecResult = executeUpdateSql(sql);
+        return addToCacheOnSqlResult(sqlExecResult, customer.getCustomerId());
     }
 
     @Override

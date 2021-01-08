@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 
+import static com.vv.personal.prom.dbi.constants.Constants.INSERT_STMT_INT_STR;
 import static com.vv.personal.prom.dbi.constants.Constants.SELECT_ALL_IDS;
 
 /**
@@ -89,6 +90,22 @@ public abstract class RefDbi<T, K> implements IRefDbi<T, K> {
     }
 
     @Override
+    public int insertNewIntegerAndString(String table, Integer id, String detail) {
+        String sql = String.format(INSERT_STMT_INT_STR, table, id, detail);
+        int sqlExecResult = executeUpdateSql(sql);
+        return addToCacheOnSqlResult(sqlExecResult, id);
+    }
+
+    protected int addToCacheOnSqlResult(Integer sqlExecResult, Integer id) {
+        if (addToCacheOnSqlResult(sqlExecResult, TABLE, id) == 1) {
+            LOGGER.debug("Cache for {} updated with id: {}", TABLE, id);
+        } else {
+            LOGGER.warn("Failed to update cache for {} with id: {}", TABLE, id);
+        }
+        return sqlExecResult;
+    }
+
+    @Override
     public Collection<Integer> selectAllIdsForTable(String table, String column) {
         List<Integer> ids = new ArrayList<>();
         int rowsReturned = 0;
@@ -109,6 +126,11 @@ public abstract class RefDbi<T, K> implements IRefDbi<T, K> {
         }
         LOGGER.info("Received {} entries of select All for '{}' of table '{}'", rowsReturned, column, table);
         return ids;
+    }
+
+    @Override
+    public void addToCache(String table, Integer id) {
+        getCachedRef().addNewIdToEntityCache(table, id);
     }
 
     @Override

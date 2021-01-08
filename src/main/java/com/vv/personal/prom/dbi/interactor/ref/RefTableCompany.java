@@ -42,7 +42,8 @@ public class RefTableCompany extends RefDbi<Company, CompanyList> {
                 company.getCompanyName(),
                 company.getCompanyContactPerson(),
                 contactNumbers);
-        return executeUpdateSql(sql);
+        int sqlExecResult = executeUpdateSql(sql);
+        return addToCacheOnSqlResult(sqlExecResult, company.getCompanyId());
     }
 
     @Override
