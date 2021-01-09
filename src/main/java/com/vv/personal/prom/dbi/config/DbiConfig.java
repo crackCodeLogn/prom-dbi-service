@@ -1,7 +1,10 @@
 package com.vv.personal.prom.dbi.config;
 
+import com.vv.personal.prom.dbi.auth.Authenticator;
+import com.vv.personal.prom.dbi.feign.AuthFeign;
 import com.vv.personal.prom.dbi.interactor.ref.*;
 import org.apache.commons.lang3.time.StopWatch;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +17,10 @@ import static com.vv.personal.prom.dbi.constants.Constants.*;
  * @since 01/01/21
  */
 @Configuration
-public class SpringConfig {
+public class DbiConfig {
+
+    @Autowired
+    private AuthFeign authFeign;
 
     @Bean(initMethod = "getDbConnection", destroyMethod = "closeDbConnection")
     public DbiConfigForRef RefDbConnector() {
@@ -60,6 +66,11 @@ public class SpringConfig {
     @Scope("prototype")
     public StopWatch stopWatch() {
         return new StopWatch();
+    }
+
+    @Bean
+    public Authenticator authenticator() {
+        return new Authenticator(authFeign);
     }
 
 }

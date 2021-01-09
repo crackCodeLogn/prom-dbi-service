@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
@@ -23,6 +24,7 @@ import static com.vv.personal.prom.dbi.constants.Constants.*;
 
 @SpringBootApplication
 @EnableEurekaClient
+@EnableFeignClients
 public class PromDbiServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(PromDbiServer.class);
     @Autowired
