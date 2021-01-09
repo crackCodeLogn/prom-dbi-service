@@ -19,8 +19,12 @@ public class DiscoveryController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
+    @Autowired
+    private AuthController authController;
+
     @GetMapping("/lookup/{serviceId}")
     public List<ServiceInstance> lookup(@PathVariable String serviceId) {
+        if (!authController.isAuthorized()) return null;
         return discoveryClient.getInstances(serviceId);
     }
 }

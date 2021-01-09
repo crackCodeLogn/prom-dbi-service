@@ -40,8 +40,12 @@ public class DbiCacheController {
     @Qualifier("RefTableComponent")
     private RefTableComponent refTableComponent;
 
+    @Autowired
+    private AuthController authController;
+
     @GetMapping("/clear/ref/all")
     public void clearAllRefCache() {
+        if (!authController.isAuthorized()) return;
         refTableCustomer.flushCache();
         refTableCompany.flushCache();
         refTableComponent.flushCache();
@@ -51,6 +55,7 @@ public class DbiCacheController {
 
     @GetMapping("/clear/ref/{}")
     public void clearSingleRefTableCache(String refTableCacheToClear) {
+        if (!authController.isAuthorized()) return;
         switch (refTableCacheToClear) {
             case TABLE_REF_CUSTOMER:
                 refTableCustomer.flushCache();
@@ -72,6 +77,7 @@ public class DbiCacheController {
 
     @GetMapping("/populate/ref/all")
     public void populateAllRefCache() {
+        if (!authController.isAuthorized()) return;
         refTableCustomer.populatePrimaryIds();
         refTableCompany.populatePrimaryIds();
         refTableComponent.populatePrimaryIds();
@@ -81,6 +87,7 @@ public class DbiCacheController {
 
     @GetMapping("/populate/ref/{}")
     public void populateSingleRefTableCache(String refTableCacheToPopulate) {
+        if (!authController.isAuthorized()) return;
         switch (refTableCacheToPopulate) {
             case TABLE_REF_CUSTOMER:
                 refTableCustomer.populatePrimaryIds();
@@ -102,6 +109,7 @@ public class DbiCacheController {
 
     @GetMapping("/display/ref/all")
     public String displayAllRefTableCache() {
+        if (!authController.isAuthorized()) return null;
         return refTableCustomer.getCachedRef().getActiveRefEntityIds().toString();
     }
 }

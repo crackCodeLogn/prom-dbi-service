@@ -40,8 +40,12 @@ public class DbiRetrieveController {
     @Qualifier("RefTableComponent")
     private RefTableComponent refTableComponent;
 
+    @Autowired
+    private AuthController authController;
+
     @GetMapping("/customer/all")
     public CustomerList retrieveAllCustomers() {
+        if (!authController.isAuthorized()) return null;
         CustomerList customerList = refTableCustomer.retrieveAll();
         LOGGER.info("Retrieved following list of customers from DB:-\n{}", customerList);
         return customerList;
@@ -49,6 +53,7 @@ public class DbiRetrieveController {
 
     @GetMapping("/company/all")
     public CompanyList retrieveAllCompanies() {
+        if (!authController.isAuthorized()) return null;
         CompanyList companyList = refTableCompany.retrieveAll();
         LOGGER.info("Retrieved following list of companies from DB:-\n{}", companyList);
         return companyList;
