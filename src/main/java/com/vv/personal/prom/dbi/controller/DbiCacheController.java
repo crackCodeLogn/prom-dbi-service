@@ -77,7 +77,7 @@ public class DbiCacheController {
 
     @GetMapping("/populate/ref/all")
     public void populateAllRefCache() {
-        if (!authController.isAuthorized()) return;
+        //if (!authController.isAuthorized()) return;
         refTableCustomer.populatePrimaryIds();
         refTableCompany.populatePrimaryIds();
         refTableComponent.populatePrimaryIds();
@@ -109,7 +109,7 @@ public class DbiCacheController {
 
     @GetMapping("/display/ref/all")
     public String displayAllRefTableCache() {
-        if (!authController.isAuthorized()) return null;
+        //if (!authController.isAuthorized()) return null;
         return refTableCustomer.getCachedRef().getActiveRefEntityIds().toString();
     }
 }
