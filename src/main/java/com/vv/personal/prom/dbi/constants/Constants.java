@@ -48,8 +48,8 @@ public class Constants {
     public static final String PRIMARY_COL_PROBLEM = "id_prob";
     public static final String PRIMARY_COL_COMPONENT = "id_cpnt";
 
-    public static final String INSERT_STMT_INT_STR = "INSERT INTO %s" +
-            "VALUES(%d, %s)";
+    public static final String INSERT_STMT_INT_STR = "INSERT INTO %s " +
+            "VALUES(%d, '%s')";
 
     public static final String SELECT_ALL_IDS = "SELECT %s FROM %s";
     public static final String SELECT_ALL = "SELECT * FROM %s";
