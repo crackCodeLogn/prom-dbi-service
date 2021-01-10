@@ -45,32 +45,32 @@ public class DbiNewController {
 
     @PostMapping("/customer")
     public int addNewCustomer(@RequestBody Customer newCustomer) {
-        if (!authController.isAuthorized()) return -1;
+        if (!authController.isAuthorized() && !authController.checkCred(newCustomer.getAuth().getCred())) return -1;
         addNewCompany(newCustomer.getCompany());
         return refTableCustomer.pushNewEntity(newCustomer);
     }
 
     @PostMapping("/company")
     public int addNewCompany(@RequestBody Company newcustomer) {
-        if (!authController.isAuthorized()) return -1;
+        if (!authController.isAuthorized() && !authController.checkCred(newcustomer.getAuth().getCred())) return -1;
         return refTableCompany.pushNewEntity(newcustomer);
     }
 
     @PostMapping("/make")
     public int addNewMake(@RequestBody Make newMake) {
-        if (!authController.isAuthorized()) return -1;
+        if (!authController.isAuthorized() && !authController.checkCred(newMake.getAuth().getCred())) return -1;
         return refTableMake.pushNewEntity(newMake);
     }
 
     @PostMapping("/problem")
     public int addNewProblem(@RequestBody Problem newProblem) {
-        if (!authController.isAuthorized()) return -1;
+        if (!authController.isAuthorized() && !authController.checkCred(newProblem.getAuth().getCred())) return -1;
         return refTableProblem.pushNewEntity(newProblem);
     }
 
     @PostMapping("/component")
     public int addNewComponent(@RequestBody Component newComponent) {
-        if (!authController.isAuthorized()) return -1;
+        if (!authController.isAuthorized() && !authController.checkCred(newComponent.getAuth().getCred())) return -1;
         return refTableComponent.pushNewEntity(newComponent);
     }
 

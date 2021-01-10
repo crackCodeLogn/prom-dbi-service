@@ -33,7 +33,10 @@ public class AuthController {
     }
 
     public Boolean isAuthorized() {
-        return authenticator.isAuthorized(extractClientIp());
+        boolean isAuth = authenticator.isAuthorized(extractClientIp());
+        if (isAuth) LOGGER.info("Authorized");
+        else LOGGER.warn("Not Authorized");
+        return isAuth;
     }
 
     private String extractClientIp() {
