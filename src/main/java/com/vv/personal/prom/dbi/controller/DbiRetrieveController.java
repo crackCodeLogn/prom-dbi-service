@@ -6,7 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,40 +43,40 @@ public class DbiRetrieveController {
     @Autowired
     private AuthController authController;
 
-    @GetMapping("/customer/all")
-    public CustomerList retrieveAllCustomers(Auth auth) {
+    @PostMapping("/all/customer")
+    public CustomerList retrieveAllCustomers(@RequestBody Auth auth) {
         if (!authController.isAuthorized() && !authController.checkCred(auth.getCred())) return null;
         CustomerList customerList = refTableCustomer.retrieveAll();
         LOGGER.info("Retrieved following list of customers from DB:-\n{}", customerList);
         return customerList;
     }
 
-    @GetMapping("/company/all")
-    public CompanyList retrieveAllCompanies(Auth auth) {
+    @PostMapping("/all/company")
+    public CompanyList retrieveAllCompanies(@RequestBody Auth auth) {
         if (!authController.isAuthorized() && !authController.checkCred(auth.getCred())) return null;
         CompanyList companyList = refTableCompany.retrieveAll();
         LOGGER.info("Retrieved following list of companies from DB:-\n{}", companyList);
         return companyList;
     }
 
-    @GetMapping("/problem/all")
-    public ProblemList retrieveAllProblems(Auth auth) {
+    @PostMapping("/all/problem")
+    public ProblemList retrieveAllProblems(@RequestBody Auth auth) {
         if (!authController.isAuthorized() && !authController.checkCred(auth.getCred())) return null;
         ProblemList problemList = refTableProblem.retrieveAll();
         LOGGER.info("Retrieved following list of problems from DB:-\n{}", problemList);
         return problemList;
     }
 
-    @GetMapping("/make/all")
-    public MakeList retrieveAllMakes(Auth auth) {
+    @PostMapping("/all/make")
+    public MakeList retrieveAllMakes(@RequestBody Auth auth) {
         if (!authController.isAuthorized() && !authController.checkCred(auth.getCred())) return null;
         MakeList makeList = refTableMake.retrieveAll();
         LOGGER.info("Retrieved following list of makes from DB:-\n{}", makeList);
         return makeList;
     }
 
-    @GetMapping("/component/all")
-    public ComponentList retrieveAllComponents(Auth auth) {
+    @PostMapping("/all/component")
+    public ComponentList retrieveAllComponents(@RequestBody Auth auth) {
         if (!authController.isAuthorized() && !authController.checkCred(auth.getCred())) return null;
         ComponentList componentList = refTableComponent.retrieveAll();
         LOGGER.info("Retrieved following list of components from DB:-\n{}", componentList);
