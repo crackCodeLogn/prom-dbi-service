@@ -2,18 +2,24 @@ spring:
   application:
     name: prom-v2-dbi-service
     heroku: ${spring.application.name}.herokuapp.com
+  security:
+    user:
+      name: ${SPRING_SECURITY_USERNAME:user}
+      password: ${SPRING_SECURITY_CRED:default}
 
 server:
   port: ${EUREKA_REGISTRATION_PORT:0}
 
 eureka:
-  local: http://localhost:2011
+  local: localhost:2011
   instance:
-    hostname: ${EUREKA_HOSTNAME:${eureka.local}} #EUREKA_HOSTNAME var set to => https://prom-v2-eureka-service.herokuapp.com on heroku dashboard
+    hostname: ${DOMAIN_NAME:${spring.application.name}}
     preferIpAddress: true
   client:
     service-url:
-      defaultZone: ${eureka.instance.hostname}/eureka
+      defaultZone: http://${eureka.user}:${eureka.password}@${EUREKA_URL:${eureka.local}}/eureka #EUREKA_URL var set to => https://prom-v2-eureka-service.herokuapp.com on heroku dashboard
+  user: ${EUREKA_USER_NAME:user}
+  password: ${EUREKA_USER_CRED:default}
 
 db:
   ref:
@@ -23,3 +29,5 @@ db:
       port: 5432
     user: postgres
     cred: rom_p211
+
+logging.level.org.springframework.web: ${LOGGING:INFO}
