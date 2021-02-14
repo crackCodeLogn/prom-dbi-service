@@ -1,0 +1,8 @@
+db:
+  ref:
+    name: ref
+    server:
+      host: --
+      port: --
+    user: --
+    cred: --
