@@ -24,14 +24,16 @@ public abstract class RefDbi<T, K> implements IRefDbi<T, K> {
     protected final String PRIMARY_COLUMN;
     protected final CachedRef cachedRef;
     private final DbiConfigForRef dbiConfigForRef;
+    private final String createTableIfNotExistSql;
     private final ExecutorService singleWriterThread = Executors.newSingleThreadExecutor();
     private final ExecutorService multiReadThreads = Executors.newFixedThreadPool(4);
 
-    public RefDbi(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef, Logger logger) {
+    public RefDbi(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef, String createTableIfNotExistSql, Logger logger) {
         this.TABLE = table;
         this.PRIMARY_COLUMN = primaryColumn;
         this.dbiConfigForRef = dbiConfigForRef;
         this.cachedRef = cachedRef;
+        this.createTableIfNotExistSql = createTableIfNotExistSql;
         this.LOGGER = logger;
 
         LOGGER.info("Created handler for '{}'", TABLE);
@@ -129,6 +131,11 @@ public abstract class RefDbi<T, K> implements IRefDbi<T, K> {
     }
 
     @Override
+    public int createTableIfNotExists() {
+        return executeUpdateSql(createTableIfNotExistSql);
+    }
+
+    @Override
     public void addToCache(String table, Integer id) {
         getCachedRef().addNewIdToEntityCache(table, id);
     }
@@ -149,5 +156,9 @@ public abstract class RefDbi<T, K> implements IRefDbi<T, K> {
 
     public CachedRef getCachedRef() {
         return cachedRef;
+    }
+
+    public String getCreateTableIfNotExistSql() {
+        return createTableIfNotExistSql;
     }
 }

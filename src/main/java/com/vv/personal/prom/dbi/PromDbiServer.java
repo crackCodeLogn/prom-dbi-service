@@ -1,6 +1,8 @@
 package com.vv.personal.prom.dbi;
 
+import com.vv.personal.prom.dbi.config.DbiConfig;
 import com.vv.personal.prom.dbi.controller.DbiCacheController;
+import com.vv.personal.prom.dbi.interactor.ref.RefDbi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class PromDbiServer {
 
     @Autowired
     private DbiCacheController dbiCacheController;
+
+    @Autowired
+    private DbiConfig dbiConfig;
 
     public static void main(String[] args) {
         SpringApplication.run(PromDbiServer.class, args);
@@ -66,6 +71,11 @@ public class PromDbiServer {
 
         dbiCacheController.populateAllRefCache();
         LOGGER.info("Prepped overall cache => {}", dbiCacheController.displayAllRefTableCache());
+
+        if (dbiConfig.isCreateTablesOnStartup()) {
+            LOGGER.info("Creating tables on startup if non-existent!");
+            dbiConfig.getRefDbis().forEach(RefDbi::createTableIfNotExists);
+        }
     }
 
 }

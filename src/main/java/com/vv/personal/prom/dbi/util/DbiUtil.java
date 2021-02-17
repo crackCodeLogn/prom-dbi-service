@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 import static com.vv.personal.prom.dbi.constants.Constants.EMPTY_STR;
+import static com.vv.personal.prom.dbi.constants.Constants.FILE_SQL_LOCATION_BASE_CREATETABLES;
 
 /**
  * @author Vivek
@@ -27,5 +28,10 @@ public class DbiUtil {
         if (contactNumbers.isEmpty()) return Collections.emptyList();
         return Arrays.stream(contactNumbers.split(","))
                 .collect(Collectors.toList());
+    }
+
+    public static String generateCreateTableSql(String tableName) {
+        String sqlPath = String.format("%s/%s.sql", FILE_SQL_LOCATION_BASE_CREATETABLES, tableName);
+        return FileUtil.readFileFromLocation(Thread.currentThread().getContextClassLoader().getResourceAsStream(sqlPath));
     }
 }

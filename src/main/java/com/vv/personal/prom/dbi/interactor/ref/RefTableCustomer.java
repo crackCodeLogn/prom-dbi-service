@@ -25,8 +25,8 @@ public class RefTableCustomer extends RefDbi<Customer, CustomerList> {
     private final String INSERT_STMT_NEW_CUSTOMER = "INSERT INTO %s(id_cust, id_comp, name_first, name_last, contact_cust)" +
             " VALUES(%d, %d, '%s', '%s', '%s')";
 
-    public RefTableCustomer(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef) {
-        super(table, primaryColumn, dbiConfigForRef, cachedRef, LOGGER);
+    public RefTableCustomer(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef, String createTableIfNotExistSql) {
+        super(table, primaryColumn, dbiConfigForRef, cachedRef, createTableIfNotExistSql, LOGGER);
     }
 
     @Override

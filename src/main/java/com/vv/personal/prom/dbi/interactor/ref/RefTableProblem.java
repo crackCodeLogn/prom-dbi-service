@@ -18,8 +18,8 @@ import static com.vv.personal.prom.dbi.constants.Constants.SELECT_ALL;
 public class RefTableProblem extends RefDbi<Problem, ProblemList> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RefTableProblem.class);
 
-    public RefTableProblem(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef) {
-        super(table, primaryColumn, dbiConfigForRef, cachedRef, LOGGER);
+    public RefTableProblem(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef, String createTableIfNotExistSql) {
+        super(table, primaryColumn, dbiConfigForRef, cachedRef, createTableIfNotExistSql, LOGGER);
     }
 
     @Override

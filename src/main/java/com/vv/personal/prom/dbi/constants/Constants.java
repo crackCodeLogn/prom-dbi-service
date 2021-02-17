@@ -53,4 +53,7 @@ public class Constants {
 
     public static final String SELECT_ALL_IDS = "SELECT %s FROM %s";
     public static final String SELECT_ALL = "SELECT * FROM %s";
+
+    public static final String FILE_SQL_LOCATION_BASE = "src/main/resources";
+    public static final String FILE_SQL_LOCATION_BASE_CREATETABLES = "sql/createTables";
 }

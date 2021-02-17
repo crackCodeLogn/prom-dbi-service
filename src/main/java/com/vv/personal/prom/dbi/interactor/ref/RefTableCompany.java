@@ -23,8 +23,8 @@ public class RefTableCompany extends RefDbi<Company, CompanyList> {
     private final String INSERT_STMT_NEW_COMPANY = "INSERT INTO %s(id_comp, name_comp, person_contact_comp, contact_comp)" +
             " VALUES(%d, '%s', '%s', '%s')";
 
-    public RefTableCompany(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef) {
-        super(table, primaryColumn, dbiConfigForRef, cachedRef, LOGGER);
+    public RefTableCompany(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef, String createTableIfNotExistSql) {
+        super(table, primaryColumn, dbiConfigForRef, cachedRef, createTableIfNotExistSql, LOGGER);
     }
 
     @Override

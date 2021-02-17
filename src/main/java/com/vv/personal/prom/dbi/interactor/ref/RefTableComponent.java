@@ -19,8 +19,8 @@ import static com.vv.personal.prom.dbi.constants.Constants.SELECT_ALL;
 public class RefTableComponent extends RefDbi<Component, ComponentList> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RefTableComponent.class);
 
-    public RefTableComponent(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef) {
-        super(table, primaryColumn, dbiConfigForRef, cachedRef, LOGGER);
+    public RefTableComponent(String table, String primaryColumn, DbiConfigForRef dbiConfigForRef, CachedRef cachedRef, String createTableIfNotExistSql) {
+        super(table, primaryColumn, dbiConfigForRef, cachedRef, createTableIfNotExistSql, LOGGER);
     }
 
     @Override

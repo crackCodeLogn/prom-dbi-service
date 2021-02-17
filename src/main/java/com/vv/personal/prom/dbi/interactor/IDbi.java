@@ -8,6 +8,8 @@ import java.sql.ResultSet;
  */
 public interface IDbi {
 
+    int createTableIfNotExists();
+
     ResultSet executeNonUpdateSql(String sql);
 
     int executeUpdateSql(String sql);
